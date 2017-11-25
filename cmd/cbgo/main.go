@@ -1,4 +1,4 @@
-package cbgo
+package main
 
 import (
 	"github.com/uruddarraju/coinbase-client-go/cmd/cbgo/subcommand"
@@ -45,5 +45,7 @@ func init() {
 }
 
 func main() {
-
+	log.Debug("Starting up coinbase client command, logging for debugging purposes......")
+	cmd.Execute()
+	return
 }
