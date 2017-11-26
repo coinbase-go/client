@@ -1,11 +1,15 @@
 package main
 
 import (
-	"github.com/uruddarraju/coinbase-client-go/cmd/cbgo/subcommand"
+	"os"
+	"path/filepath"
+
+	"github.com/coinbase-go/client/cmd/cbgo/subcommand"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+
 )
 
 var cmd = &cobra.Command{
@@ -26,9 +30,15 @@ func init() {
 
 	cmd.AddCommand(subcommand.VersionCmd)
 
-	viper.SetEnvPrefix("thyra")
-	viper.SetConfigName("thyra")
-	viper.AddConfigPath("/Users/alekhya/go/src/github.com/uruddarraju/thyra/")
+	viper.SetEnvPrefix("cbgo")
+	viper.SetConfigName("cbgo")
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		panic("current directory unknown")
+	}
+
+	viper.AddConfigPath(dir)
+
 	viper.AutomaticEnv()
 	viper.SetConfigType("json")
 
@@ -37,7 +47,7 @@ func init() {
 
 	viper.BindPFlag("started-by", flags.Lookup("started-by"))
 
-	err := viper.ReadInConfig()
+	err = viper.ReadInConfig()
 	if err != nil {
 		log.Fatalf("Error loading thyra configuration: %v", err)
 	}
